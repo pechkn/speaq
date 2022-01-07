@@ -3,32 +3,32 @@ import { store } from "./store"
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
 
-export interface IMessage {
+export interface Message {
   recipientId: number
   text: string
   date: number
 }
 
-export interface IPost {
+export interface Post {
   id: number
   img: string
   date: number
 }
 
-export interface IComment {
+export interface Comment {
   postId: number
   text: string
   date: number
 }
 
-export interface IUser {
+export interface User {
   id: number
   name: string
   avatar: string
   status: string
-  posts: IPost[]
-  messages: IMessage[]
-  comments: IComment[]
+  posts: Post[]
+  messages: Message[]
+  comments: Comment[]
   following: number[]
   likedPosts: number[]
 }
@@ -61,7 +61,7 @@ export type RelativeTimeFormatUnit =
   | "second"
   | "seconds"
 
-export interface IState {
+export interface State {
   currentUserId: number
-  users: IUser[]
+  users: User[]
 }

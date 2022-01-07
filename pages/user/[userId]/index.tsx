@@ -88,13 +88,11 @@ const User = (userId: number) => {
   const dispatch = useAppDispatch()
   const user = users[userId]
   const currentUser = users[currentUserId]
-  const isCurrentUserProfile = userId !== currentUserId
+  const isCurrentUserProfile = userId !== currentUserId 
   const followersCount = users.filter((user) =>
     user.following.includes(userId)
   ).length
-
-  const getUserPosts = () =>
-    users[userId].posts.slice().sort((a, b) => b.date - a.date)
+  const getUserPosts = () => users[userId].posts.slice().sort((a, b) => b.date - a.date)
 
   return (
     <Page>

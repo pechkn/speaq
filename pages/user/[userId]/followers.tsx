@@ -1,6 +1,6 @@
+import { useMemo } from 'react'
 import styled from "styled-components"
 import { useAppSelector } from "../../../store"
-import { User } from "../../../components/User"
 
 const Page = styled.div`
   display: flex;
@@ -17,8 +17,8 @@ const Heading = styled.h1`
 
 const Followers = (userId: number) => {
   const users = useAppSelector((state) => state.users)
-  const user = users[userId]
-  const userFollowers = users.filter((user) => user.following.includes(userId))
+  const user = useMemo(() => users[userId], [users])
+  const userFollowers = useMemo(() => users.filter((user) => user.following.includes(userId)), [userId, users, user])
 
   return (
     <Page>
@@ -27,9 +27,9 @@ const Followers = (userId: number) => {
           ? user.name + "'s followers"
           : user.name + " has no followers"}
       </Heading>
-      {userFollowers.map((user) => (
+      {/* {userFollowers.map((user) => (
         <User user={user} link="/user/" />
-      ))}
+      ))} */}
     </Page>
   )
 }

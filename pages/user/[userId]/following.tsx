@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useAppSelector } from "../../../store";
-import { User } from "../../../components/User";
 
 const Page = styled.div`
   display: flex;
@@ -26,9 +25,9 @@ const Following = (userId : number) => {
           ? user.name + " is following"
           : user.name + " doesn't follow anyone"}
       </Heading>
-      {userFollowing.map((userId) => (
+      {/* {userFollowing.map((userId) => (
         <User user={users[userId]} link="/user/" />
-      ))}
+      ))} */}
     </Page>
   )
 }

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import ProfileIcon from "../public/profile.svg"
 import HomeIcon from "../public/home.svg"
 import MessengerIcon from "../public/message.svg"
 import PlusIcon from "../public/plus.svg"
@@ -7,8 +6,8 @@ import HeartIcon from "../public/heart.svg"
 import styled from "styled-components"
 // import { Input } from "./Input"
 import Link from "next/link"
-import { createPost, useAppSelector } from '../store'
-import {useRouter} from 'next/router'
+import { createPost, useAppSelector } from "../store"
+import { useRouter } from "next/router"
 
 const AppHeader = styled.header`
   height: 50px;
@@ -85,7 +84,7 @@ const Overlay = styled.div`
 export const Header = () => {
   const [overlay, setOverlay] = useState(false)
   const currentUserId = useAppSelector((state) => state.currentUserId)
-  const {pathname} = useRouter()
+  const { pathname } = useRouter()
 
   return (
     <AppHeader>
@@ -123,7 +122,19 @@ export const Header = () => {
           </Link>
           <Link href={"/user/" + currentUserId}>
             <StyledLink $active={pathname.includes("/user")}>
-              <img src={ProfileIcon} alt="" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
             </StyledLink>
           </Link>
         </Nav>

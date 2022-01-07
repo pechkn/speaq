@@ -1,8 +1,8 @@
 import type { NextPage } from "next"
-import { useMemo } from "react"
 import styled from "styled-components"
 import { Post } from "../components/Post"
 import { useAppSelector } from "../store"
+import { User } from "../types"
 
 const Container = styled.div`
   display: grid;
@@ -28,44 +28,41 @@ const Placeholder = styled.h1`
   text-align: center;
 `
 
+const getFollowingPosts = (users: User[], currentUserId: number) => {
+  const posts = users
+    .map((user) => {
+      if (users[currentUserId].following.includes(user.id))
+        return user.posts.map((post) => ({
+          id: post.id,
+          user: users[user.id],
+          date: post.date,
+          img: post.img,
+          likes: users.filter((user) => user.likedPosts.includes(post.id))
+            .length,
+        }))
+    })
+    .flat()
+    .filter(Boolean)
+  return posts.length === 0 ? null : posts
+}
+
 const Index: NextPage = () => {
   const currentUserId = useAppSelector((state) => state.currentUserId)
   const users = useAppSelector((state) => state.users)
-
-  const getFollowingPosts = () =>
-    users
-      .map((user) => {
-        if (users[currentUserId].following.includes(user.id))
-          return user.posts.map((post) => ({
-            id: post.id,
-            user: users[user.id],
-            date: post.date,
-            img: post.img,
-            likes: users.filter((user) => user.likedPosts.includes(post.id))
-              .length,
-          }))
-      })
-      .flat().filter(Boolean)
-
-  const posts = useMemo(getFollowingPosts, [currentUserId, users])
-
   return (
     <Page>
-      {posts.length ? (
-        posts
-          .sort((a, b) => b!.date - a!.date)
-          .map((post) => (
-            <Post
-              id={post!.id}
-              user={post!.user}
-              date={post!.date}
-              img={post!.img}
-              likes={post!.likes}
-            />
-          ))
-      ) : (
-        <Placeholder>You don't follow anyone yet</Placeholder>
-      )}
+      {getFollowingPosts(users, currentUserId)
+        ?.sort((a, b) => b!.date - a!.date)
+        .map((post) => (
+          <Post
+            id={post!.id}
+            user={post!.user}
+            date={post!.date}
+            img={post!.img}
+            likes={post!.likes}
+            key={post!.id}
+          />
+        )) || <Placeholder>You don't follow anyone yet</Placeholder>}
     </Page>
   )
 }

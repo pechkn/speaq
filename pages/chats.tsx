@@ -1,9 +1,8 @@
 import styled from "styled-components"
-import { User } from "../components/User"
 import { NextPage } from "next"
 import { useAppSelector } from "../store"
 import { useMemo } from "react"
-import { IUser } from '../types'
+import { User } from '../types'
 
 const Page = styled.div`
   width: 100%;
@@ -21,7 +20,7 @@ const Chats: NextPage = () => {
   const currentUserId = useAppSelector((state) => state.currentUserId)
 
   const getChats = () => {
-    let chats : IUser[] = []
+    let chats : User[] = []
     users.filter(
       (user) =>
         user.id !== currentUserId &&
@@ -39,10 +38,10 @@ const Chats: NextPage = () => {
 
   return (
     <Page>
-      {chats
+      {/* {chats
         .map((user) => (
           <User user={user} link="/chat/" />
-        ))}
+        ))} */}
     </Page>
   )
 }

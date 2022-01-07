@@ -1,7 +1,7 @@
-import { IState } from "../types"
+import { State } from "../types"
 
-export const initialState: IState = {
-  currentUserId: -1,
+export const initialState: State = {
+  currentUserId: 0,
   users: [
     {
       id: 0,

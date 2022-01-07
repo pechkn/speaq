@@ -4,7 +4,7 @@ import styled, { createGlobalStyle } from "styled-components"
 import { store } from "../store"
 import { useLayoutEffect, useState } from "react"
 import { Header } from "../components/Header"
-import { Head } from 'next/document'
+import Head from "next/head"
 
 const GlobalStyle = createGlobalStyle`
 	* {
@@ -39,6 +39,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Provider store={store}>
       <Head>
+        <link rel="icon" href="/logo.png" />
         <title>Social network</title>
       </Head>
       <GlobalStyle />

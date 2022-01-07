@@ -1,9 +1,8 @@
 import styled from "styled-components"
 import HeartIcon from "../public/heart.svg"
 import HeartFillIcon from "../public/heart-fill.svg"
-import { IUser } from "../types"
+import { User } from "../types"
 // import { timeSince } from "../utils"
-import { User } from "./User"
 // import { Input } from "./Input"
 import {
   createComment,
@@ -83,10 +82,6 @@ const Button = styled.button`
   width: 40px;
 `
 
-const Comment = styled.div`
-  padding: 6px 12px;
-`
-
 const Username = styled.a`
   font-size: 14px;
   font-weight: bold;
@@ -97,6 +92,7 @@ const CommentText = styled.p`
   font-size: 14px;
   word-break: break-word;
   white-space: pre-wrap;
+  padding: 6px 12px;
 `
 
 const CommentDate = styled.p`
@@ -117,10 +113,26 @@ const Comments = styled.div`
 
 interface Props {
   id: number
-  user: IUser
+  user: User
   date: number
   img: string
   likes: number
+}
+
+const getComments = (users: User[], postId: number) => {
+  const comments = users
+    .map((user) =>
+      user.comments
+        .filter((comment) => comment.postId === postId)
+        .sort((a, b) => b.date - a.date)
+        .map((comment) => ({
+          user: user,
+          text: comment.text,
+          date: comment.date,
+        }))
+    )
+    .flat()
+  return comments.length === 0 ? null : comments
 }
 
 export const Post = ({ id, user, date, img, likes }: Props) => {
@@ -128,47 +140,27 @@ export const Post = ({ id, user, date, img, likes }: Props) => {
   const currentUserId = useAppSelector((state) => state.currentUserId)
   const dispatch = useAppDispatch()
 
-  const getComments = () =>
-    users
-      .map((user) =>
-        user.comments
-          .filter((comment) => comment.postId === id)
-          .sort((a, b) => b.date - a.date)
-          .map((comment) => ({
-            user: user,
-            text: comment.text,
-            date: comment.date,
-          }))
-      )
-      .flat()
-
-  const comments = useMemo(getComments, [users])
-
   return (
     <Component>
       {img && <PostImg src={img} />}
       <PostBody>
         <PostHeader>
-          <User user={user} link="/user/" />
+          {/* <User user={user} link="/user/" /> */}
           {/* <Date>{timeSince(date)}</Date> */}
         </PostHeader>
-        {comments && (
-          <Comments>
-            {comments.map((comment) => (
-              <Comment>
-                <CommentText>
-                  <Link href={"/user/" + comment.user.id}>
-                    <Username>{comment.user.name}</Username>
-                  </Link>
-                  {comment.text}
-                  <CommentDate>
-                    {/* {timeSince(comment.date)!.match(/^[0-9]*\s[a-z]/)} */}
-                  </CommentDate>
-                </CommentText>
-              </Comment>
-            ))}
-          </Comments>
-        )}
+        <Comments>
+          {getComments(users, id)?.map((comment) => (
+            <CommentText>
+              <Link href={"/user/" + comment.user.id}>
+                <Username>{comment.user.name}</Username>
+              </Link>
+              {comment.text}
+              <CommentDate>
+                {/* {timeSince(comment.date)!.match(/^[0-9]*\s[a-z]/)} */}
+              </CommentDate>
+            </CommentText>
+          ))}
+        </Comments>
         <Actions>
           <Button onClick={() => dispatch(toggleLike(id))}>
             <img

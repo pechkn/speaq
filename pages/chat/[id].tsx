@@ -1,10 +1,8 @@
 import styled from "styled-components"
-import { User } from "../../components/User"
-import { IMessage } from "../../types"
+import { Message } from "../../types"
 import { useAppSelector } from '../../store'
 
-const Page = styled.div<{ height: string }>`
-  height: ${(props) => props.height};
+const Page = styled.div`
   width: 100%;
   grid-area: "chat";
   display: flex;
@@ -77,7 +75,7 @@ const Chat = (userId : number) => {
   const currentUser = users[currentUserId]
 
   const getMessages = () => {
-    let messages: IMessage[] = []
+    let messages: Message[] = []
     userId >= 0 &&
       currentUser.messages.map(
         (message) =>
@@ -95,7 +93,7 @@ const Chat = (userId : number) => {
     <Page>
       {userId >= 0 && (
         <Header>
-          <User user={user} link="/user/" />
+          {/* <User user={user} link="/user/" /> */}
         </Header>
       )}
       <Messages>
