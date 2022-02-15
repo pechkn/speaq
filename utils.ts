@@ -1,7 +1,8 @@
-import { RelativeTimeFormatUnits, RelativeTimeFormatUnit } from './types';
+import { RelativeTimeFormatUnits, RelativeTimeFormatUnit, WindowSize } from './types';
+import {useEffect, useState} from "react";
 
-export function timeSince(input: string | Date) {
-  const date = input instanceof Date ? input : new Date(input);
+export function timeSince(input: number) {
+  const date = new Date(input)
   const formatter = new Intl.RelativeTimeFormat("en");
   const ranges: RelativeTimeFormatUnits = {
     years: 3600 * 24 * 365,
@@ -17,7 +18,26 @@ export function timeSince(input: string | Date) {
   for (const [key, value] of Object.entries(ranges) as [RelativeTimeFormatUnit, number][]) {
     if (value < Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / value;
-      return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
+      return formatter.format(Math.round(delta), key);
     }
   }
+}
+
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: undefined,
+    height: undefined,
+  });
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return windowSize;
 }

@@ -4,33 +4,29 @@ export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
 
 export interface Message {
-  recipientId: number
-  text: string
-  date: number
-}
-
-export interface Post {
   id: number
-  img: string
-  date: number
-}
-
-export interface Comment {
-  postId: number
+  senderId: number
+  recipientId: number
   text: string
   date: number
 }
 
 export interface User {
   id: number
+  email: string
   name: string
   avatar: string
-  status: string
-  posts: Post[]
   messages: Message[]
-  comments: Comment[]
   following: number[]
-  likedPosts: number[]
+  savedMessages: number[]
+}
+
+export interface Group {
+  id: number
+  name: string
+  avatar: string
+  members: number[]
+  messages: Message[]
 }
 
 export interface RelativeTimeFormatUnits {
@@ -64,4 +60,10 @@ export type RelativeTimeFormatUnit =
 export interface State {
   currentUserId: number
   users: User[]
+  groups: Group[]
+}
+
+export interface WindowSize {
+  width: number | undefined
+  height: number | undefined
 }

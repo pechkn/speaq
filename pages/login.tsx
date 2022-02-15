@@ -1,125 +1,66 @@
-import { MutableRefObject, useRef } from "react"
-import styled from "styled-components"
-import {
-  createUser,
-  setCurrentUser,
-  useAppDispatch,
-  useAppSelector,
-} from "../store"
-
-const Page = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  align-items: center;
-  justify-content: center;
-  padding-top: 10vh;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-`
-
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 240px;
-  padding: 20px;
-`
-
-const Input = styled.input`
-  height: 36px;
-  border: 1px solid gainsboro;
-  border-radius: 4px;
-  font-size: 15px;
-  height: 36px;
-  min-width: 120px;
-  padding: 0 12px;
-  margin: 8px 0;
-`
-
-const Note = styled.p`
-  padding: 20px 12px;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 540px;
-`
-
-const Link = styled.a`
-  display: block;
-  text-transform: lowercase;
-  margin: 20px auto;
-`
+import {setCurrentUser, useAppDispatch, useAppSelector} from "../store";
+import React, {useState} from "react";
+import {EmailInput} from "../components/EmailInput";
+import Link from 'next/link';
 
 const Login = () => {
-  const loginUsername = useRef() as MutableRefObject<HTMLInputElement>
-  const registerUsername = useRef() as MutableRefObject<HTMLInputElement>
-  const avatar = useRef() as MutableRefObject<HTMLInputElement>
-  const status = useRef() as MutableRefObject<HTMLInputElement>
-  const users = useAppSelector((state) => state.users)
-  const dispatch = useAppDispatch()
+	const users = useAppSelector((state) => state.users)
+	const dispatch = useAppDispatch()
+	const [email, setEmail] = useState('')
+	const [isEmailChanged, setEmailChanged] = useState(false)
+	const [isEmailValid, setEmailValid] = useState(false)
 
-  return (
-    <Page>
-      <Container>
-        <Form>
-          <Input type="text" placeholder="Username" ref={loginUsername} />
-          <Input
-            type="submit"
-            value="Login"
-            onClick={() => {
-              if (loginUsername.current.value) {
-                users.find(
-                  (user) => user.name === loginUsername.current.value
-                )
-                  ? dispatch(setCurrentUser(loginUsername.current.value))
-                  : alert("Incorrect name")
-              }
-            }}
-          />
-        </Form>
-        <Form>
-          <Input type="text" placeholder="Username" ref={registerUsername} />
-          <Input
-            type="text"
-            placeholder="Link to profile picture"
-            ref={avatar}
-          />
-          <Input type="text" placeholder="Profile status" ref={status} />
-          <Input
-            type="submit"
-            value="Register"
-            onClick={() => {
-              if (registerUsername.current.value) {
-                !users.find(
-                  (user) => user.name === registerUsername.current.value
-                )
-                  ? (dispatch(
-                      createUser({
-                        name: registerUsername.current.value,
-                        avatar: avatar.current.value,
-                        status: status.current.value,
-                      })
-                    ),
-                    dispatch(setCurrentUser(registerUsername.current.value)))
-                  : alert("User already exists")
-              }
-            }}
-          />
-        </Form>
-      </Container>
-      <Note>
-        This website is not real. Users are fictional, photos are
-        copyright-free. All data (messages, posts, etc) is not sent anywhere and
-        exist only in your browser. No password is required, you can log in with
-        any existing name (try <b>pechkin</b>) or register a new one.
-      </Note>
-      <Link href="https://pechk.in">developed by pechkin</Link>
-    </Page>
-  )
+	const login = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		if (users.find((user) => user.email === email)) {
+			dispatch(setCurrentUser(email))
+		}
+	}
+
+	return (
+			<div className="flex flex-col p-2 mt-14">
+				<svg className="text-blue-600 h-8 fill-current m-2" viewBox="0 0 126 37" fill="none">
+					<path className="text-inherit"
+								d="M121.5 28.25C119.843 28.25 118.5 26.9069 118.5 25.25V10C118.5 8.34315 119.843 7 121.5 7H122.978C124.635 7 125.978 8.34315 125.978 10V25.25C125.978 26.9069 124.635 28.25 122.978 28.25H121.5ZM121.5 37C119.843 37 118.5 35.6569 118.5 34V32.5C118.5 30.8431 119.843 29.5 121.5 29.5H122.978C124.635 29.5 125.978 30.8431 125.978 32.5V34C125.978 35.6569 124.635 37 122.978 37H121.5Z"
+								fill="currentColor"/>
+					<path className="text-inherit" fillRule="evenodd" clipRule="evenodd"
+								d="M110.16 7.59155C108.667 7.19722 106.987 7 105.12 7C103.36 7 101.787 7.22532 100.4 7.67606C99.04 8.09859 97.88 8.77465 96.92 9.70422C95.96 10.6338 95.2267 11.8592 94.72 13.3803C94.24 14.8732 94 16.6761 94 18.7887C94 22.3943 94.8 25.1408 96.4 27.0282C98 28.8873 100.253 29.8169 103.16 29.8169C103.48 29.8169 103.987 29.7887 104.68 29.7324C105.4 29.7042 106.16 29.5071 106.96 29.1408C107.285 28.9968 107.592 28.8069 107.88 28.5713V34C107.88 35.6569 109.223 37 110.88 37H112C113.657 37 115 35.6569 115 34V13.3803C115 11.7464 114.56 10.4788 113.68 9.57747C112.827 8.64789 111.653 7.98588 110.16 7.59155ZM104.5 14.5C102.843 14.5 101.5 15.8432 101.5 17.5V19C101.5 20.6569 102.843 22 104.5 22H104.75C106.407 22 107.75 20.6569 107.75 19V17.5C107.75 15.8432 106.407 14.5 104.75 14.5H104.5Z"
+								fill="currentColor"/>
+					<path className="text-inherit" fillRule="evenodd" clipRule="evenodd"
+								d="M25.84 7.59155C27.3333 7.19722 29.0133 7 30.88 7C32.64 7 34.2133 7.22532 35.6 7.67606C36.96 8.09859 38.12 8.77465 39.08 9.70422C40.04 10.6338 40.7733 11.8592 41.28 13.3803C41.76 14.8732 42 16.6761 42 18.7887C42 22.3943 41.2 25.1408 39.6 27.0282C38 28.8873 35.7467 29.8169 32.84 29.8169C32.52 29.8169 32.0133 29.7887 31.32 29.7324C30.6 29.7042 29.84 29.5071 29.04 29.1408C28.7147 28.9968 28.4081 28.8069 28.12 28.5713V34C28.12 35.6569 26.7769 37 25.12 37H24C22.3431 37 21 35.6569 21 34V13.3803C21 11.7464 21.44 10.4788 22.32 9.57747C23.1733 8.64789 24.3467 7.98588 25.84 7.59155ZM31.5 14.5C33.1569 14.5 34.5 15.8432 34.5 17.5V19C34.5 20.6569 33.1569 22 31.5 22H31.25C29.5931 22 28.25 20.6569 28.25 19V17.5C28.25 15.8432 29.5931 14.5 31.25 14.5H31.5Z"
+								fill="currentColor"/>
+					<path className="text-inherit" fillRule="evenodd" clipRule="evenodd"
+								d="M7.30547 30.5159C5.74928 30.5159 4.39481 30.3429 3.24207 29.9971C2.73891 29.8423 2.25885 29.6904 1.80189 29.5413C0.847432 29.23 0.216142 28.332 0.216142 27.3281V24.5666C0.216142 23.6766 1.29689 23.124 2.07493 23.5562C2.85302 23.9885 3.73198 24.3631 4.71181 24.6801C5.69164 24.9683 6.71469 25.1124 7.78098 25.1124C8.61671 25.1124 9.13541 24.9971 9.33721 24.7666C9.56771 24.5072 9.68301 24.2335 9.68301 23.9452C9.68301 23.5994 9.46681 23.3112 9.03458 23.0807C8.6023 22.8213 8.04034 22.6052 7.3487 22.4323C6.65706 22.2594 5.92219 22.1153 5.14409 22C4.51008 21.8847 3.87608 21.683 3.24207 21.3948C2.63689 21.0778 2.08933 20.6456 1.59942 20.098C1.10951 19.5504 0.720462 18.8732 0.432272 18.0663C0.144088 17.2593 0 16.3228 0 15.2565C0 13.7291 0.288192 12.4611 0.864552 11.4524C1.46974 10.4438 2.24784 9.63689 3.19885 9.0317C4.17868 8.42651 5.21614 7.99424 6.31124 7.73487C7.43516 7.4755 8.50144 7.36019 9.51011 7.38905C11.5274 7.4755 13.0836 7.69164 14.1787 8.03746C14.7945 8.21571 15.3647 8.435 15.8894 8.69529C16.6389 9.06712 17.0354 9.87274 17.0416 10.7094L17.0503 11.887C17.0613 13.3686 15.4606 14.3197 14.1354 13.6571C13.1268 13.1383 11.9884 12.879 10.7205 12.879C9.65411 12.879 8.9625 13.023 8.64553 13.3112C8.35734 13.5995 8.21325 13.9453 8.21325 14.3487C8.21325 14.781 8.34294 15.1268 8.6023 15.3862C8.89052 15.6167 9.25071 15.8041 9.68301 15.9481C10.1441 16.0922 10.6484 16.2364 11.196 16.3804C11.9164 16.5533 12.6513 16.7551 13.4006 16.9856C14.1787 17.1874 14.8992 17.5187 15.5619 17.9798C16.2536 18.441 16.8012 19.0894 17.2046 19.9251C17.6369 20.732 17.853 21.8271 17.853 23.2104C17.7954 25.0548 17.2767 26.5101 16.2968 27.5764C15.3458 28.6427 14.0778 29.4063 12.4928 29.8674C10.9077 30.2997 9.17864 30.5159 7.30547 30.5159ZM56.8511 30.5159C54.5744 30.5159 52.5571 30.0547 50.7992 29.1326C49.0413 28.2104 47.6724 26.9136 46.6926 25.2421C45.7127 23.5418 45.2229 21.5677 45.2229 19.3199C45.2229 15.4583 46.2026 12.4467 48.1623 10.2853C50.1508 8.09506 53.0182 7 56.7647 7C59.2141 7 61.2026 7.51873 62.7301 8.5562C64.2574 9.59366 65.3813 11.1642 66.1018 13.268C66.5986 14.6437 66.9243 16.2474 67.0791 18.0792C67.2176 19.7194 65.8561 21.049 64.2101 21.049H53.4928C53.7109 21.6308 54.009 22.1351 54.3871 22.562C55.2804 23.5706 56.8079 24.0749 58.9693 24.0749C59.6897 24.0749 60.4245 23.9741 61.1739 23.7723C61.9231 23.5706 62.6291 23.3544 63.292 23.1239C64.1085 22.8044 64.9347 23.4222 64.9347 24.2989V27.0034C64.9347 28.2574 64.1574 29.3916 62.9476 29.7213C62.4798 29.8488 61.9894 29.9696 61.4765 30.0836C60.1796 30.3718 58.6378 30.5159 56.8511 30.5159ZM79.9502 30.5159C78.4516 30.5159 77.0827 30.3862 75.8436 30.1268C74.6044 29.8674 73.5237 29.4495 72.6015 28.8732C71.7081 28.268 71.0165 27.4611 70.5266 26.4524C70.0366 25.415 69.7917 24.147 69.7917 22.6484C69.7917 21.4669 70.0511 20.4006 70.5698 19.4496C71.0885 18.4697 71.9099 17.6916 73.0338 17.1153C74.1865 16.5101 75.6851 16.2075 77.5295 16.2075H83.1758C83.1758 15.0297 82.7913 14.7826 81.9897 14.2672L81.9819 14.2622C81.2038 13.7435 80.0943 13.4841 78.6534 13.4841C77.3277 13.4841 76.0165 13.7435 74.7197 14.2622C73.4386 14.7462 71.6938 13.8155 71.6938 12.4461V10.6964C71.6938 9.71489 72.2886 8.83379 73.1888 8.4426C73.3662 8.36554 73.5042 8.3046 73.616 8.25526C73.8499 8.15202 73.9686 8.0996 74.0908 8.05682C74.2167 8.0127 74.3462 7.97883 74.6093 7.91002C74.7385 7.87624 74.8998 7.83405 75.1087 7.7781C76.7225 7.34582 78.6246 7.12968 80.8148 7.12968C81.3623 7.12968 82.0539 7.17291 82.8897 7.25937C83.7543 7.34582 84.6476 7.53311 85.5698 7.82133C86.492 8.08069 87.3565 8.4986 88.1635 9.07493C88.9992 9.65126 89.662 10.4294 90.152 11.4092C90.6707 12.3602 90.9301 13.585 90.9301 15.0836L90.8868 25.3285C90.8868 26.4524 90.4833 27.4035 89.6765 28.1816C88.8695 28.9597 87.6591 29.536 86.0453 29.9107C84.4314 30.3141 82.3997 30.5159 79.9502 30.5159ZM77.1066 23.3833C77.1066 22.1896 78.0743 21.2219 79.268 21.2219H81.4294C82.6231 21.2219 83.5908 22.1896 83.5908 23.3833C83.5908 24.577 82.6231 25.5447 81.4294 25.5447H79.268C78.0743 25.5447 77.1066 24.577 77.1066 23.3833ZM59.2 15.5C59.2 15.7862 58.9546 16 58.6684 16H53.7316C53.4454 16 53.2 15.7862 53.2 15.5C53.2 13.567 54.5431 12 56.2 12C57.8569 12 59.2 13.567 59.2 15.5Z"
+					/>
+				</svg>
+				<form className="flex flex-col" onSubmit={login}>
+				<EmailInput email={email} setEmail={setEmail} isEmailValid={isEmailValid} setEmailValid={setEmailValid} isEmailChanged={isEmailChanged} setEmailChanged={setEmailChanged}/>
+				<input
+						className='bg-blue-600 text-white rounded-lg px-4 py-2 m-2'
+						type="submit"
+						value="Log in via email"
+				/>
+				</form>
+				<button
+						className="leading-tight border-blue-600 border border-solid rounded-lg text-blue-600 px-4 m-2 h-10 flex items-center justify-center">
+					<svg className="h-5 text-inherit fill-current mr-2" viewBox="0 0 20 20" fill="none">
+						<g className="text-inherit" clipPath="url(#clip0_586_32)">
+							<path className="text-inherit"
+										d="M19.4312 8.1975C19.5479 8.8687 19.606 9.54875 19.605 10.23C19.605 13.2725 18.5175 15.845 16.625 17.5863H16.6275C14.9725 19.115 12.6975 20 10 20C7.34783 20 4.8043 18.9464 2.92893 17.0711C1.05357 15.1957 0 12.6522 0 10C0 7.34784 1.05357 4.8043 2.92893 2.92894C4.8043 1.05357 7.34783 3.73041e-06 10 3.73041e-06C12.4824 -0.0290692 14.8798 0.903545 16.69 2.6025L13.835 5.4575C12.803 4.47372 11.4256 3.93499 10 3.9575C7.39125 3.9575 5.175 5.7175 4.385 8.0875C3.96613 9.32939 3.96613 10.6744 4.385 11.9163H4.38875C5.1825 14.2825 7.395 16.0425 10.0037 16.0425C11.3512 16.0425 12.5087 15.6975 13.4062 15.0875H13.4025C13.9236 14.7423 14.3694 14.295 14.7129 13.7727C15.0565 13.2505 15.2906 12.664 15.4012 12.0488H10V8.19875H19.4312V8.1975Z"/>
+						</g>
+						<defs>
+							<clipPath id="clip0_586_32">
+								<rect width="20" height="20"/>
+							</clipPath>
+						</defs>
+					</svg>
+					Log in via Google
+				</button>
+				<p className="m-2 leading-tight">Don&apos;t have an account? <Link href="/signup"><a className="text-blue-600">Sign
+					up</a></Link></p>
+				{/*<ConfirmEmail enteredEmail={email} isResending={true}/>*/}
+			</div>
+	)
 }
 
 export default Login
