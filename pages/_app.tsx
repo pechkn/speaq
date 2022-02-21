@@ -2,7 +2,7 @@ import { Provider } from "react-redux"
 import type { AppProps } from "next/app"
 import { store } from "../store"
 import Head from "next/head"
-import '../style.css'
+import {YMaps} from "react-yandex-maps";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -11,7 +11,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" href="/logo.svg" />
         <title>speaq!</title>
       </Head>
-      <Component {...pageProps} />
+      <YMaps>
+        <Component {...pageProps} />
+      </YMaps>
     </Provider>
   )
 }

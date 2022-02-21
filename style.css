@@ -3,11 +3,5 @@
 @tailwind utilities;
 
 @layer base {
-    * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        outline: none;
-        text-decoration: none;
-    }
+    * {@apply m-0 p-0 border-none;}
 }
