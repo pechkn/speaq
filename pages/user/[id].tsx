@@ -1,15 +1,15 @@
-import Link from "next/link"
 import {
-  setCurrentUser,
-  toggleFollow,
-  useAppDispatch,
   useAppSelector,
 } from "../../store"
+import {FC} from "react";
 
-const User = (userId: number) => {
+interface Props {
+  userId: number
+}
+
+const User : FC<Props> = ({userId}) => {
   const users = useAppSelector((state) => state.users)
   const currentUserId = useAppSelector((state) => state.currentUserId)
-  const dispatch = useAppDispatch()
   const user = users[userId]
   const currentUser = users[currentUserId]
   const isCurrentUserProfile = userId !== currentUserId
