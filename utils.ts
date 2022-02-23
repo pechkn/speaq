@@ -1,7 +1,7 @@
-import { RelativeTimeFormatUnits, RelativeTimeFormatUnit, WindowSize } from './types';
+import {RelativeTimeFormatUnits, RelativeTimeFormatUnit, WindowSize, Coords} from './types';
 import {useEffect, useState} from "react";
 
-export function timeSince(input: number) {
+export const timeSince = (input: number) => {
   const date = new Date(input)
   const formatter = new Intl.RelativeTimeFormat("en");
   const ranges: RelativeTimeFormatUnits = {
@@ -21,6 +21,28 @@ export function timeSince(input: number) {
       return formatter.format(Math.round(delta), key);
     }
   }
+}
+
+export const distanceBetween = ([x1, y1]: Coords, [x2, y2]: Coords) => {
+  const toRadians = (value: number) => (value * Math.PI) / 180
+  let R = 6371.071
+  let lat1 = toRadians(x1)
+  let lat2 = toRadians(x2)
+  let difflat = lat2 - lat1
+  let difflon = toRadians(y2 - y1)
+  return (
+      2 *
+      R *
+      Math.asin(
+          Math.sqrt(
+              Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+              Math.cos(lat1) *
+              Math.cos(lat2) *
+              Math.sin(difflon / 2) *
+              Math.sin(difflon / 2)
+          )
+      )
+  )
 }
 
 export const useWindowSize = () => {

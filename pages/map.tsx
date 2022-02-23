@@ -1,18 +1,7 @@
 import {useEffect, useState, useCallback} from "react"
 import {Map, Placemark} from "react-yandex-maps"
-
-type Coords = [number, number]
-
-interface TaxiLocation {
-	latitude: number,
-	longitude: number,
-	bearing: number
-}
-
-interface Taxi {
-	driver_id: string,
-	location: TaxiLocation
-}
+import {distanceBetween} from "../utils";
+import {Coords, Taxi} from "../types";
 
 const londonCoords: Coords = [51.5049375, -0.0964509]
 const singaporeCoords: Coords = [1.285194, 103.8522982]
@@ -25,40 +14,18 @@ const getUserCoords = () =>
 				)
 		)
 
-const distanceBetween = ([x1, y1]: Coords, [x2, y2]: Coords) => {
-	const toRadians = (value: number) => (value * Math.PI) / 180
-	let R = 6371.071
-	let lat1 = toRadians(x1)
-	let lat2 = toRadians(x2)
-	let difflat = lat2 - lat1
-	let difflon = toRadians(y2 - y1)
-	return (
-			2 *
-			R *
-			Math.asin(
-					Math.sqrt(
-							Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-							Math.cos(lat1) *
-							Math.cos(lat2) *
-							Math.sin(difflon / 2) *
-							Math.sin(difflon / 2)
-					)
-			)
-	)
-}
-
 const AttachMap = () => {
 	const [userCoords, setUserCoords] = useState<Coords>([0, 0])
-	const [closestOfficeCoords, setClosestOfficeCoords] = useState<Coords | null>(null)
+	const [closestPoint, setClosestPoint] = useState<Coords | null>(null)
 	const [taxis, setTaxis] = useState([])
 
-	const toggleOffice = () =>
-			closestOfficeCoords?.[0] === londonCoords[0] &&
-			closestOfficeCoords[1] === londonCoords[1]
-					? setClosestOfficeCoords(singaporeCoords)
-					: setClosestOfficeCoords(londonCoords)
+	const toggleClosestPoint = () =>
+			closestPoint?.[0] === londonCoords[0] &&
+			closestPoint[1] === londonCoords[1]
+					? setClosestPoint(singaporeCoords)
+					: setClosestPoint(londonCoords)
 
-	const getClosestOfficeCoords = useCallback(
+	const getClosestPoint = useCallback(
 			(userCoords: Coords) =>
 					distanceBetween(londonCoords, userCoords) >
 					distanceBetween(singaporeCoords, userCoords)
@@ -70,40 +37,36 @@ const AttachMap = () => {
 	useEffect(() => {
 		getUserCoords().then((userCoords) => {
 			setUserCoords(userCoords)
-			setClosestOfficeCoords(getClosestOfficeCoords(userCoords))
+			setClosestPoint(getClosestPoint(userCoords))
 		})
 	}, [])
 
 	useEffect(() => {
-		if (closestOfficeCoords) {
+		if (closestPoint) {
 			fetch(
-					`https://secret-ocean-49799.herokuapp.com/https://qa-interview-test.splytech.dev/api/drivers?latitude=${closestOfficeCoords[0]}&longitude=${closestOfficeCoords[1]}&count=2`
+					`https://secret-ocean-49799.herokuapp.com/https://qa-interview-test.splytech.dev/api/drivers?latitude=${closestPoint[0]}&longitude=${closestPoint[1]}&count=2`
 			)
 					.then((res) => res.json())
 					.then((data) => setTaxis(data.drivers))
 		}
-	}, [closestOfficeCoords])
+	}, [closestPoint])
 
 	return (
 			<>
-				{closestOfficeCoords && (
+				{closestPoint && (
 						<Map
 								width="100%"
-								state={{center: closestOfficeCoords, zoom: 15}}
+								state={{center: closestPoint, zoom: 15}}
 						>
 							{taxis && taxis.map((taxi: Taxi) =>
 									<Placemark key={taxi.driver_id} geometry={[taxi.location.latitude, taxi.location.longitude]}/>)}
 						</Map>
 				)}
-				<button onClick={toggleOffice}>&lt;</button>
-				<button
-						onClick={() =>
-								setClosestOfficeCoords(getClosestOfficeCoords(userCoords))
-						}
-				>
+				<button onClick={toggleClosestPoint}>&lt;</button>
+				<button onClick={() => setClosestPoint(getClosestPoint(userCoords))}>
 					To closest point
 				</button>
-				<button onClick={toggleOffice}>&gt;</button>
+				<button onClick={toggleClosestPoint}>&gt;</button>
 			</>
 	)
 }

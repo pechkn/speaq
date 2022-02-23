@@ -3,6 +3,7 @@ import type { AppProps } from "next/app"
 import { store } from "../store"
 import Head from "next/head"
 import {YMaps} from "react-yandex-maps";
+import '../style.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

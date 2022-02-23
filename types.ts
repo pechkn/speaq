@@ -2,6 +2,7 @@ import { store } from "./store"
 
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
+export type Coords = [number, number]
 
 export interface Message {
   id: number
@@ -66,4 +67,15 @@ export interface State {
 export interface WindowSize {
   width: number | undefined
   height: number | undefined
+}
+
+export interface TaxiLocation {
+  latitude: number,
+  longitude: number,
+  bearing: number
+}
+
+export interface Taxi {
+  driver_id: string,
+  location: TaxiLocation
 }

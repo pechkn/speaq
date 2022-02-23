@@ -27,7 +27,6 @@ const Chats: NextPage = () => {
 	}
 
 	const chats = useMemo(getChats, [users, currentUserId])
-	console.log(chats)
 
 	return (
 			<>

@@ -17,24 +17,27 @@ export const ConfirmEmail: FC<Props> = ({enteredEmail, isResending}) => {
 				{isResending ?
 						<>
 							<p className="m-2 leading-tight">Enter the email on which you want to get the link</p>
-							<EmailInput email={email} setEmail={setEmail} isEmailChanged={isEmailChanged} setEmailChanged={setEmailChanged} isEmailValid={isEmailValid} setEmailValid={setEmailValid} />
+							<EmailInput email={email} setEmail={setEmail} isEmailChanged={isEmailChanged}
+													setEmailChanged={setEmailChanged} isEmailValid={isEmailValid} setEmailValid={setEmailValid}/>
 							<input
 									className='bg-blue-600 text-white rounded-lg px-4 py-2 m-2'
 									type="submit"
 									value="Resend link"
 							/>
 						</> :
-						<><p className="m-2 leading-tight">Click the verification link which is sent to
+						<>
+							<p className="m-2 leading-tight">Click the verification link which is sent to
 							<strong>{email}</strong></p>
-					<a className='bg-blue-600 text-white rounded-lg px-4 py-2 m-2 flex justify-center'
-					>Open email
-					</a>
-					<p className="m-2 leading-tight">Didn&apos;t get the link? <a href="" className="text-blue-600">Resend
-					it</a>
-					</p>
-					<p className="m-2 leading-tight">If you still haven’t received link, contact us at <a href=""
-					className="text-blue-600">support@speaq.chat</a>.
-					</p></>}
+							<a className='bg-blue-600 text-white rounded-lg px-4 py-2 m-2 flex justify-center'
+							>Open email
+							</a>
+							<p className="m-2 leading-tight">Didn&apos;t get the link? <a href="" className="text-blue-600">Resend
+								it</a>
+							</p>
+							<p className="m-2 leading-tight">If you still haven’t received link, contact us at
+								<a href="mailto:support@speaq.chat" className="text-blue-600">support@speaq.chat</a>.
+							</p>
+						</>}
 			</div>
 	)
 }
