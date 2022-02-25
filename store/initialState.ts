@@ -24,6 +24,13 @@ export const initialState: State = {
 					recipientId: 1,
 					text: "How're u?",
 					date: 1643100000000,
+				},
+				{
+					id: 2,
+					senderId: 0,
+					recipientId: 1,
+					text: "Is everything ok?",
+					date: 1643100100000,
 				}
 			]
 		},
@@ -36,7 +43,7 @@ export const initialState: State = {
 			savedMessages: [1],
 			messages: [
 				{
-					id: 2,
+					id: 3,
 					senderId: 1,
 					recipientId: 0,
 					text: "Sup",

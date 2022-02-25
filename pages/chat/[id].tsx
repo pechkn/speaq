@@ -1,65 +1,45 @@
-import {Message as TMessage} from "../../types"
 import {useAppSelector} from '../../store'
 import {NextPage} from "next";
 import {useRouter} from 'next/router'
-import {useState} from "react";
 import {MessageInput} from "../../components/MessageInput";
 import Link from "next/link";
 import Image from "next/image";
-import {getTime, timeSince} from "../../utils";
+import {getChatMessages, getDate} from "../../utils";
 
 const Chat: NextPage = () => {
 	const users = useAppSelector((state) => state.users)
 	const currentUserId = useAppSelector((state) => state.currentUserId)
 	const router = useRouter()
-	const [messageText, setMessageText] = useState("")
 	const {id} = router.query
 	let recipientId: number = 0
 	if (id != null) {
 		recipientId = parseInt(id[0])
 	}
 
-	const getMessages = () => {
-		const messages: TMessage[] = []
+	const renderMessages = () => {
+		const messages = getChatMessages(users, currentUserId, recipientId)
 		const elements = []
-		users[currentUserId].messages.forEach(
-				(message) =>
-						message.recipientId === recipientId && messages.push(message)
-		)
-		users[recipientId].messages.forEach(
-				(message) => {
-					message.recipientId === currentUserId &&
-					messages.push(message)
-				}
-		)
-
-		messages.sort((a, b) => a.date - b.date)
-
 		for (let i = 0; i < messages.length; i++) {
 			const message = messages[i]
 			const sender = users[message.senderId]
 			if (i === 0 || message.date - messages[i - 1].date > 300000) elements.push(
-					<div className="flex items-center">
-						<Link href={'/user/' + message.senderId}>
-							<a className="mx-2 p-2 flex gap-2 mt-2 items-center leading-none w-full rounded-t-xl">
-								<div className="shrink-0 h-8">
-									<Image width="32" height="32" className="relative rounded-full object-fill" src={sender.avatar}
-												 alt="User's avatar"/>
-								</div>
-								<p className="font-medium leading-none">{sender.name}</p>
-								<p className="text-neutral-500 leading-none">{getTime(message.date)}</p>
-							</a>
-						</Link>
-					</div>)
+					<Link href={'/user/' + message.senderId}>
+						<a className="mx-2 p-2 flex gap-2 mt-2 items-center leading-none w-full rounded-t-xl">
+							<div className="shrink-0 h-8">
+								<Image width="32" height="32" className="relative rounded-full object-fill" src={sender.avatar} alt="User's avatar"/>
+							</div>
+							<p className="font-medium leading-none">{sender.name}</p>
+							<p className="text-neutral-500 leading-none">{getDate(message.date)}</p>
+						</a>
+					</Link>)
 			elements.push(<p className="mx-2 p-2 pt-0 rounded-b-xl">{message.text}</p>)
 		}
-
 		return elements
 	}
 
 	return (
 			<div>
-				<header className="p-2 w-full z-10 bg-white shadow-sm">
+				<header className="p-2 w-full z-10 bg-white shadow-sm sticky top-0">
 					<div className="flex w-full items-center justify-between">
 						<div className="flex items-center">
 							<button className='m-2' onClick={() => router.back()}>
@@ -78,9 +58,9 @@ const Chat: NextPage = () => {
 				</header>
 				<div className="flex flex-col justify-between h-full">
 					<div className="flex flex-col overflow-y-auto pb-14 h-full">
-						{getMessages()}
+						{renderMessages()}
 					</div>
-					<MessageInput text={messageText} setText={setMessageText}/>
+					<MessageInput recipientId={recipientId}/>
 				</div>
 			</div>
 	)

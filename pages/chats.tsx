@@ -30,11 +30,11 @@ const Chats: NextPage = () => {
 
 	return (
 			<>
-				<header className="p-2 w-full sticky top-0 z-10 bg-white shadow-sm">
+				<header className="w-full sticky top-0 z-10 bg-white shadow-sm">
 					<div className="flex w-full items-center justify-between">
 						<div className="flex items-center">
 							<Link href="/">
-								<a className='m-2 text-blue-600'>
+								<a className='p-4 text-blue-600'>
 									<svg className="text-inherit fill-current h-6" viewBox="0 0 26 24">
 										<circle className="text-inherit" r="3" transform="matrix(-1 0 0 1 23 21)"/>
 										<rect className="text-inherit" width="6" height="18" rx="3" transform="matrix(-1 0 0 1 18 6)"/>
@@ -44,11 +44,11 @@ const Chats: NextPage = () => {
 									</svg>
 								</a>
 							</Link>
-							<h1 className="m-2 text-xl font-medium leading-none">Chats</h1>
+							<h1 className="text-xl font-medium leading-none">Chats</h1>
 						</div>
 						<Link href={"/user/" + currentUserId}>
-							<a>
-								<Image height="32" width="32" className="mx-2 rounded-full object-cover"
+							<a className="px-4 flex items-center">
+								<Image height="32" width="32" className="rounded-full object-cover"
 											 src={users[currentUserId].avatar} alt="User's avatar"/>
 							</a>
 						</Link>
