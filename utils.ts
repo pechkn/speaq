@@ -12,15 +12,20 @@ export const timeSince = (input: number) => {
     hours: 3600,
     minutes: 60,
     seconds: 1,
-  };
+  }
   
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
   for (const [key, value] of Object.entries(ranges) as [RelativeTimeFormatUnit, number][]) {
     if (value < Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / value;
-      return formatter.format(Math.round(delta), key);
+      return formatter.format(Math.round(delta), key)
     }
   }
+}
+
+export const getTime = (timestamp:number) => {
+  const date = new Date(timestamp)
+  return date.getHours() + ':' + date.getMinutes()
 }
 
 export const distanceBetween = ([x1, y1]: Coords, [x2, y2]: Coords) => {

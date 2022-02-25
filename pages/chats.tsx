@@ -60,9 +60,11 @@ const Chats: NextPage = () => {
 									<ChatLink user={user} key={user.id}/>
 							))}
 				</div>
-				<Link href={"/chat/" + currentUserId}>
-					<a>Create message</a>
-				</Link>
+				<div className="fixed w-full p-4 fixed bottom-0">
+					<Link href={"/chat/" + currentUserId}>
+						<a className='bg-blue-600 text-white rounded-lg px-4 py-2 block text-center'>Create message</a>
+					</Link>
+				</div>
 			</>
 	)
 }

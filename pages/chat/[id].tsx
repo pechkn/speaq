@@ -6,7 +6,7 @@ import {useState} from "react";
 import {MessageInput} from "../../components/MessageInput";
 import Link from "next/link";
 import Image from "next/image";
-import {timeSince} from "../../utils";
+import {getTime, timeSince} from "../../utils";
 
 const Chat: NextPage = () => {
 	const users = useAppSelector((state) => state.users)
@@ -40,20 +40,18 @@ const Chat: NextPage = () => {
 			const sender = users[message.senderId]
 			if (i === 0 || message.date - messages[i - 1].date > 300000) elements.push(
 					<div className="flex items-center">
-						{(message.senderId !== messages[i - 1]?.senderId) ?
-								<Link href={'/user/' + sender}>
-									<a className="mx-2 p-2 flex gap-2 mt-2 items-center leading-none bg-neutral-100 w-full rounded-t-xl">
-										<div className="shrink-0 h-8">
-											<Image width="32" height="32" className="relative rounded-full object-fill" src={sender.avatar}
-														 alt="User's avatar"/>
-										</div>
-										<p className="font-medium leading-none">{sender.name}</p>
-										<p className="text-neutral-500 leading-none">{timeSince(message.date)}</p>
-									</a>
-								</Link>
-						 : <div className="mx-2 mt-2 pt-2 text-neutral-500 px-2 py-1 leading-none bg-neutral-100 w-full rounded-t-xl">{timeSince(message.date)}</div>}
+						<Link href={'/user/' + message.senderId}>
+							<a className="mx-2 p-2 flex gap-2 mt-2 items-center leading-none w-full rounded-t-xl">
+								<div className="shrink-0 h-8">
+									<Image width="32" height="32" className="relative rounded-full object-fill" src={sender.avatar}
+												 alt="User's avatar"/>
+								</div>
+								<p className="font-medium leading-none">{sender.name}</p>
+								<p className="text-neutral-500 leading-none">{getTime(message.date)}</p>
+							</a>
+						</Link>
 					</div>)
-			elements.push(<p className="mx-2 p-2 pt-0 bg-neutral-100 rounded-b-xl">{message.text}</p>)
+			elements.push(<p className="mx-2 p-2 pt-0 rounded-b-xl">{message.text}</p>)
 		}
 
 		return elements
