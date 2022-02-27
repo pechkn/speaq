@@ -22,8 +22,18 @@ export const reducerSlice = createSlice({
         senderId: state.currentUserId,
         recipientId,
         text,
-        date: Date.now() / 1000,
+        date: Date.now(),
       })
+    },
+    clearChat: (
+      state,
+      action: PayloadAction<{ recipientId: number }>
+    ) => {
+      const { recipientId } = action.payload
+      const currentUser = state.users[state.currentUserId]
+      const recipient = state.users[recipientId]
+      currentUser.messages = currentUser.messages.filter(message => message.recipientId !== recipientId)
+      recipient.messages = recipient.messages.filter(message => message.recipientId !== state.currentUserId)
     },
     toggleFollow: (state, action: PayloadAction<number>) => {
       const userId = action.payload

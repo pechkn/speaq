@@ -42,7 +42,7 @@ const Login = () => {
 				/>
 				</form>
 				<button
-						className="leading-tight border-blue-600 border border-solid rounded-lg text-blue-600 px-4 m-2 h-10 flex items-center justify-center">
+						className="border-blue-600 border border-solid rounded-lg text-blue-600 px-4 m-2 h-10 flex items-center justify-center">
 					<svg className="h-5 text-inherit fill-current mr-2" viewBox="0 0 20 20" fill="none">
 						<g className="text-inherit" clipPath="url(#clip0_586_32)">
 							<path className="text-inherit"
@@ -56,7 +56,7 @@ const Login = () => {
 					</svg>
 					Log in via Google
 				</button>
-				<p className="m-2 leading-tight">Don&apos;t have an account? <Link href="/signup"><a className="text-blue-600">Sign
+				<p className="m-2 ">Don&apos;t have an account? <Link href="/signup"><a className="text-blue-600">Sign
 					up</a></Link></p>
 				{/*<ConfirmEmail enteredEmail={email} isResending={true}/>*/}
 			</div>

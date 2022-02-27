@@ -22,10 +22,10 @@ export const ChatLink: FC<Props> = ({user}) => {
 				</div>
 				<div className="flex flex-col w-full justify-between ml-4">
 					<div className="flex justify-between items-center">
-						<p className="font-medium leading-none">{user.name}</p>
-						<div className="text-neutral-500 leading-none">{timeSince(lastMessage.date)}</div>
+						<p className="font-medium ">{user.name}</p>
+						<div className="text-neutral-500 ">{timeSince(lastMessage.date)}</div>
 					</div>
-					<p className="text-neutral-500 leading-none mb-1 truncate w-64">{lastMessage.text}</p>
+					<p className="text-neutral-500  mb-1 truncate w-64">{lastMessage.text}</p>
 				</div>
 			</a>
 		</Link>)}

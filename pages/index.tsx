@@ -46,8 +46,8 @@ const Index: NextPage = () => {
 							</clipPath>
 						</defs>
 					</svg>
-					<p className="m-2 leading-none">© 2021 speaq!</p>
-					<a className="m-2 leading-none" href="https://www.freepik.com/">Image by pch.vector</a>
+					<p className="m-2 ">© 2021 speaq!</p>
+					<a className="m-2 " href="https://www.freepik.com/">Image by pch.vector</a>
 					<a href="https://pechk.in">
 						<svg className="text-blue-600 fill-current m-2 h-6" viewBox="0 0 22 32">
 							<path d="M18 32C16.4489 32 15 30.7092 15 29V28C15 26.2908 16.4489 25 18 25H19C20.5511 25 22 26.2908 22 28V29C22 30.7092 20.5511 32 19 32H18Z" fill="currentColor"/>

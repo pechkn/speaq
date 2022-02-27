@@ -44,7 +44,7 @@ const Chats: NextPage = () => {
 									</svg>
 								</a>
 							</Link>
-							<h1 className="text-xl font-medium leading-none">Chats</h1>
+							<h1 className="text-xl font-medium ">Chats</h1>
 						</div>
 						<Link href={"/user/" + currentUserId}>
 							<a className="px-4 flex items-center">

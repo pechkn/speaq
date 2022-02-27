@@ -7,6 +7,6 @@ export const store = configureStore({
   reducer: reducerSlice.reducer,
 })
 
-export const { saveMessage, toggleFollow, createUser, createMessage, setCurrentUser } = reducerSlice.actions
+export const { clearChat, saveMessage, toggleFollow, createUser, createMessage, setCurrentUser } = reducerSlice.actions
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

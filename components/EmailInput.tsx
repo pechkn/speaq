@@ -18,7 +18,7 @@ export const EmailInput: FC<Props> = ({email, setEmail, isEmailChanged, setEmail
 	return (
 			<>
 				<input
-						className='h-10 bg-neutral-200 rounded-lg px-4 m-2 h-10 leading-tight'
+						className='h-10 bg-neutral-200 rounded-lg px-4 m-2 h-10 '
 						type="email" placeholder="Enter email, e.g. mail@example.com"
 						value={email}
 						onChange={({target}) => {

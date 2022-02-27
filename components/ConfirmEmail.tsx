@@ -13,10 +13,10 @@ export const ConfirmEmail: FC<Props> = ({enteredEmail, isResending}) => {
 
 	return (
 			<div className="flex flex-col">
-				<h1 className="text-xl font-bold leading-tight m-2">{isResending ? 'Resend verification link' : 'Check your email'}</h1>
+				<h1 className="text-xl font-bold  m-2">{isResending ? 'Resend verification link' : 'Check your email'}</h1>
 				{isResending ?
 						<>
-							<p className="m-2 leading-tight">Enter the email on which you want to get the link</p>
+							<p className="m-2 ">Enter the email on which you want to get the link</p>
 							<EmailInput email={email} setEmail={setEmail} isEmailChanged={isEmailChanged}
 													setEmailChanged={setEmailChanged} isEmailValid={isEmailValid} setEmailValid={setEmailValid}/>
 							<input
@@ -26,15 +26,15 @@ export const ConfirmEmail: FC<Props> = ({enteredEmail, isResending}) => {
 							/>
 						</> :
 						<>
-							<p className="m-2 leading-tight">Click the verification link which is sent to
+							<p className="m-2 ">Click the verification link which is sent to
 							<strong>{email}</strong></p>
 							<a className='bg-blue-600 text-white rounded-lg px-4 py-2 m-2 flex justify-center'
 							>Open email
 							</a>
-							<p className="m-2 leading-tight">Didn&apos;t get the link? <a href="" className="text-blue-600">Resend
+							<p className="m-2 ">Didn&apos;t get the link? <a href="" className="text-blue-600">Resend
 								it</a>
 							</p>
-							<p className="m-2 leading-tight">If you still haven’t received link, contact us at
+							<p className="m-2 ">If you still haven’t received link, contact us at
 								<a href="mailto:support@speaq.chat" className="text-blue-600">support@speaq.chat</a>.
 							</p>
 						</>}
