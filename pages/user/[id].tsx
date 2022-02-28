@@ -1,23 +1,32 @@
 import {
+  clearChat,
   useAppSelector,
 } from "../../store"
 import {FC} from "react";
+import {useRouter} from "next/router";
+import Image from "next/image";
+import {BackButton} from "../../components/BackButton";
 
-interface Props {
-  userId: number
-}
-
-const User : FC<Props> = ({userId}) => {
-  // const users = useAppSelector((state) => state.users)
-  // const currentUserId = useAppSelector((state) => state.currentUserId)
-  // const user = users[userId]
-  // const currentUser = users[currentUserId]
-  // const isCurrentUserProfile = userId !== currentUserId
+const User = () => {
+  const users = useAppSelector((state) => state.users)
+  const router = useRouter()
+  const {id} = router.query
+  let userId = 0
+  if (id) {
+    userId = parseInt(id[0])
+  }
+  const user = users[userId]
 
   return (
     <>
-      {/* <div>User id {user.id}</div>
-      <div>User email {user.email}</div> */}
+      <header className="w-full z-10 bg-white shadow-sm sticky top-0 p-2">
+        <div className="flex w-full items-center">
+          <BackButton />
+          <h1 className="font-medium text-xl px-2">{user.name}</h1>
+        </div>
+      </header>
+      <div>{user.email}</div>
+      <Image width="360" height="360" className="object-cover" src={user.avatar} alt="User's avatar"/>
     </>
   )
 }
