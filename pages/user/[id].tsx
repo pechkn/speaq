@@ -25,8 +25,8 @@ const User = () => {
           <h1 className="font-medium text-xl px-2">{user.name}</h1>
         </div>
       </header>
-      <div>{user.email}</div>
       <Image width="360" height="360" className="object-cover" src={user.avatar} alt="User's avatar"/>
+      <div>{user.email}</div>
     </>
   )
 }
